@@ -5,12 +5,18 @@ to load and search a large sporting goods catalog.
 
 ## Requirements
 
-• Support both iPhone and iPad
+• Supports iPhone and iPad
+
 • Import a large .csv describing a catalog of sporting goods
+
 • Store the catalog in an SQLite database.
+
 • Optimize for memory consumption and performance.
+
 • Provide stats on while the file is being processed.
+
 • Provide a search screen that allows the user to search the database.
+
 • Include tests.
 
 ## CSV Record format
@@ -40,41 +46,61 @@ identify brand names and cleaning up mispellings, etc. All input files for this 
 hosted on tyler.org:
 
 • http://tyler.org/iOSSportSearch/catalog.csv       // sporting goods catalog
+
 • http://tyler.org/iOSSportSearch/aliases.csv       // word/phrase aliases (first pass)
+
 • http://tyler.org/iOSSportSearch/brandhints.csv    // brand names, aliases and or phrases to exclude from brand name names
+
 • http://tyler.org/iOSSportSearch/brandmarks.csv    // brand-specific trademarks (e.g. "UNDER ARMOUR ARMOURFLEECE, CLUTCHFIT, etc.")
 
 ## Algorithm
 
 • Strip extraneous size and color information from the end of the title field.
+
 • Apply word/phrase aliases to title field
+
 • Identify brands using metadata in brandhints.csv
+
 • Use brandmarks.csv to handle product name trademarks that imply a certain brand,
+
   even if the brand is is missing from title field (e.g. "SKAGGERFLEECE", "ARMOURVENT")
 
 ## Extra credit
 
 • Brand filtering "/nike"
+
 • List all brands "/"
+
 • Serial number fragment search (e.g. "#99000026001001", "#261000")
+
 • Once loaded successfully, the app immediataely allows the user to search the catalog
+
   when the app restarts while updating the existing catalog in the background.
+  
 • Handle brand trademarks (see above)
 
 ## Interface
 
 • Enter one or more search terms (leave space at end to perform exact match on last term)
+
   to search for products that match all terms
+  
 • To filter by brand, include "/nike" for example to only see matching Nike products.
+
 • To list all brands, enter "/"
+
 • To search by serial number, enter "#<serial-number-fragment>"
+
 • To perform an exact-match search on the trailing term, include a trailing space.
 
 ## Testing
 
-• This app uses the snapshot-testing package for view controller tests instead of
-  a traditional XCode UI test.
+• This app uses the snapshot-testing package for view controller tests instead of a traditional XCode UI test.
+  
 • Snapshot tests require the iPhone 13 simulator in portrait mode.
+
 • There are snapshot tests for light and dark modes.
+
 • To run all tests, type ⌘-u.
+
 • TestCatalog.csv is a subset of the master input file used for tests.
