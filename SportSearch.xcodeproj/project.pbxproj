@@ -46,6 +46,7 @@
 		1D7F40C9298C3DF600943386 /* DetailViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7F40C2298C3DF600943386 /* DetailViewTests.swift */; };
 		1D7F40CA298C3DF600943386 /* SQLiteQueryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7F40C3298C3DF600943386 /* SQLiteQueryTests.swift */; };
 		1D7F40CB298C3DF600943386 /* DetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7F40C4298C3DF600943386 /* DetailViewModelTests.swift */; };
+		1DE4E2C8298C483600067FFD /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 1DE4E2C7298C483600067FFD /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,6 +101,7 @@
 		1D7F40C2298C3DF600943386 /* DetailViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewTests.swift; sourceTree = "<group>"; };
 		1D7F40C3298C3DF600943386 /* SQLiteQueryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteQueryTests.swift; sourceTree = "<group>"; };
 		1D7F40C4298C3DF600943386 /* DetailViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewModelTests.swift; sourceTree = "<group>"; };
+		1DE4E2C7298C483600067FFD /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +126,7 @@
 		1D0CED24298C39EA00C0D03A = {
 			isa = PBXGroup;
 			children = (
+				1DE4E2C7298C483600067FFD /* README.md */,
 				1D0CED2F298C39EA00C0D03A /* SportSearch */,
 				1D0CED46298C39EC00C0D03A /* SportSearchTests */,
 				1D0CED2E298C39EA00C0D03A /* Products */,
@@ -344,6 +347,7 @@
 				1D0CED38298C39EA00C0D03A /* Main.storyboard in Resources */,
 				1D0CED92298C3BC100C0D03A /* TestAliases.csv in Resources */,
 				1D0CED98298C3BC100C0D03A /* TestTitleHints.csv in Resources */,
+				1DE4E2C8298C483600067FFD /* README.md in Resources */,
 				1D0CED93298C3BC100C0D03A /* TestBrandHints.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

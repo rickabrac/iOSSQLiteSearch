@@ -19,10 +19,10 @@ class SearchViewModel: Model {
 	var dispatchQueue: SynchronousDispatchQueue = DispatchQueue.global(qos: .background)
 	var isSearchFieldHidden = false
 	private var _state: CatalogState = .empty
-	private var _progress: Float  = 0.0
-	private var lineCount: Int32 = 0
-	private var lineIndex: Int32 = 0
+	private var _progress: Float = 0.0
 	private let mutex = NSLock()
+	private var latency: Int64 = 0
+	private var resultRows: Int64 = 0
 	
 	init(
 		sqliteDBFileName: String = "",                                               // sqlite database file name
@@ -188,15 +188,18 @@ class SearchViewModel: Model {
 			if input.last == " ", input.first != "#" {
 				trailingWordMatch = true
 			}
-			let stripped = input
+			var stripped = input
 				.trimmingCharacters(in: .whitespaces)
 				.uppercased()
-			if stripped == "" { // comment out to allow empty search
-				self.result = []
-				self.observer?.modelDidUpdate()
-				self.state = .ready
-				return
+			if stripped == "*" {
+				stripped = ""
 			}
+//			if stripped == "" { // comment out to allow empty search
+//				self.result = []
+//				self.observer?.modelDidUpdate()
+//				self.state = .ready
+//				return
+//			}
 			var strings = [String]()
 			var brand = ""
 			var serial = ""
@@ -344,7 +347,7 @@ class SearchViewModel: Model {
 				self.mutex.unlock()
 				return
 			}
-			var itemCount = 0
+			self.resultRows = 0
 			while selectItem.execute() {
 				let brand = selectItem.getString(colIdx: 0)
 				let title = selectItem.getString(colIdx: 1)
@@ -357,7 +360,7 @@ class SearchViewModel: Model {
 				let price = selectItem.getCurrency(colIdx: 2)
 				let item = Item(serial: serial != "" ? serial : "", brand: brand, title: title, price: price)
 				tempResult.append(item)
-				itemCount += 1
+				self.resultRows += 1
 			}
 			if selectItem.bound {
 				selectItem.finalize()
@@ -404,7 +407,8 @@ class SearchViewModel: Model {
 			}
 			self.state = .ready
 			self.observer?.modelDidUpdate()
-			print("\(currentTimeMillis() - start) ms (\(itemCount) records)")
+			self.latency = currentTimeMillis() - start;
+			print("\(self.latency) ms (\(self.resultRows) records)")
 			self.mutex.unlock()
 		}
 	}
@@ -495,5 +499,19 @@ class SearchViewModel: Model {
 			return Item(serial: "", brand: "", title: "", price: "")
 		}
 		return result[indexPath.row]
+	}
+	
+	var latencyText: String {
+		if self.state == .searching || latency == 0 {
+			return ""
+		}
+		return "\(latency) ms"
+	}
+	
+	var resultRowsText: String {
+		if self.state == .searching || resultRows == 0 {
+			return ""
+		}
+		return "\(resultRows) rows"
 	}
 }

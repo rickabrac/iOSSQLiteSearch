@@ -21,6 +21,8 @@ class SearchView: UIViewController {
 	private var loadingView = UIView()
 	private var stateLabel = UILabel()
 	private var detailLabel = UILabel()
+	private let latencyLabel = UILabel()
+	private let resultRowsLabel = UILabel()
 	private var progressView = UIProgressView(progressViewStyle: .bar)
 	private var progressSpinner = UIActivityIndicatorView(style: .medium)
 	private var dispatchQueue: SynchronousDispatchQueue = DispatchQueue.main
@@ -30,6 +32,7 @@ class SearchView: UIViewController {
 	private var spinnerConstraints = [NSLayoutConstraint]()
 	private var backgroundLoadingTableViewConstraints = [NSLayoutConstraint]()
 	private var backgroundLoadingAlert: UIAlertController? = nil
+	private var helpAlert: UIAlertController? = nil
 	
 	init(dispatchQueue: SynchronousDispatchQueue) {
 		self.dispatchQueue = dispatchQueue
@@ -98,10 +101,10 @@ class SearchView: UIViewController {
 			viewModel?.observer = self
 		}
 		
+		title = "SportSearch"
+		
 		navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 		navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15.0)]
-		
-		title = "SportSearch"
 		
 		view.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .black : .white
 		
@@ -118,7 +121,7 @@ class SearchView: UIViewController {
 		search.leftView = leftView
 		search.leftViewMode = .always
 		search.isHidden = true
-		search.placeholder = " To filter by brand, include /<brand-name>"
+		search.placeholder = " For instructions, tap ?"
 		search.autocorrectionType = .no
 		view.addSubview(search)
 		search.translatesAutoresizingMaskIntoConstraints = false
@@ -232,6 +235,52 @@ class SearchView: UIViewController {
 		noResults.textAlignment = .center
 		noResults.isHidden = true
 		view.addSubview(noResults)
+		
+		// configure help alert
+		helpAlert =	UIAlertController(title: "Help", message: "\n\n\n\n\n\n\n\n\n\n\n", preferredStyle: .alert)
+		let dismissHelp = UIAlertAction(title: "OK", style: .default) { _ in
+			self.search.placeholder = ""
+		}
+		helpAlert?.addAction(dismissHelp)
+		let helpLabel = UILabel()
+		helpLabel.numberOfLines = 0
+		helpLabel.backgroundColor = .clear
+		helpLabel.font = UIFont.systemFont(ofSize: 13.0)
+		helpLabel.text =
+			"""
+			• To search, enter keyword(s)
+				
+			• To filter by brand, include /<brand>
+				
+			• To list all brands, enter /
+				
+			• To filter by serial #, enter #<serial>
+				
+			• To see the entire catalog, enter *
+				
+			• To see these instructions, tap ?
+				
+			"""
+		helpLabel.translatesAutoresizingMaskIntoConstraints = false
+		helpAlert?.view.addSubview(helpLabel)
+		guard let helpAlert = helpAlert else { return }
+		NSLayoutConstraint.activate([
+			helpLabel.topAnchor.constraint(equalTo: helpAlert.view!.topAnchor, constant: 50),
+			helpLabel.leadingAnchor.constraint(equalTo: helpAlert.view!.leadingAnchor, constant: 30),
+			helpLabel.trailingAnchor.constraint(equalTo: helpAlert.view!.trailingAnchor, constant: -20),
+			helpLabel.bottomAnchor.constraint(equalTo: helpAlert.view!.bottomAnchor, constant: -50),
+		])
+		
+		// configure latencyLabel and resultRowsLabel
+		latencyLabel.frame = CGRect(x: 25, y: 0, width: 100, height: 20)
+		latencyLabel.font = UIFont.systemFont(ofSize: 8.0)
+		latencyLabel.text = ""
+		navigationController?.navigationBar.addSubview(latencyLabel)
+		resultRowsLabel.frame = CGRect(x: self.view.frame.size.width - 130, y: 0, width: 100, height: 20)
+		resultRowsLabel.font = UIFont.systemFont(ofSize: 8.0)
+		resultRowsLabel.text = ""
+		resultRowsLabel.textAlignment = .right
+		navigationController?.navigationBar.addSubview(resultRowsLabel)
 	}
 	
 	private func refreshView() {
@@ -271,7 +320,7 @@ class SearchView: UIViewController {
 				leftView.backgroundColor = search.backgroundColor;
 				search.leftView = leftView
 				search.leftViewMode = .always
-				search.placeholder = " To filter by brand, include /<brand-name>"
+				search.placeholder = " For instructions, tap ?"
 				search.autocorrectionType = .no
 				view.addSubview(search)
 				search.translatesAutoresizingMaskIntoConstraints = false
@@ -340,6 +389,8 @@ class SearchView: UIViewController {
 			alert.addAction(ok)
 			self.present(alert, animated: true, completion: nil)
 		}
+		latencyLabel.text = viewModel.latencyText
+		resultRowsLabel.text = viewModel.resultRowsText
 		stateLabel.text = viewModel.getLoadingState()
 		detailLabel.text = viewModel.getLoadingDetail()
 		switch viewModel.loadingState {
@@ -418,6 +469,10 @@ extension SearchView: UITextFieldDelegate {
 	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 		guard let viewModel = viewModel else { return false }
 		if viewModel.state == .searching {
+			return false
+		}
+		if string == "?", let helpAlert = helpAlert {
+			self.present(helpAlert, animated: true)
 			return false
 		}
 		noResults.isHidden = true
