@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "swift-snapshot-testing",
+        "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing.git",
+        "state": {
+          "branch": "main",
+          "revision": "f5489a273ddd57239fd68b9889b3b541bdcbfa3a",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
