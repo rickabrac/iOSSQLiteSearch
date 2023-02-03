@@ -1,7 +1,7 @@
 ## Description
 
-iOSSportSearch is an MVVM reference app I wrote in Swift that demonstrates use of SQLite
-to load and search a large sporting goods product catalog.
+iOSSportSearch is an MVVM reference app I wrote in Swift that demonstrates the
+use of SQLite to load and search a large sporting goods product catalog.
 
 ## Requirements
 
