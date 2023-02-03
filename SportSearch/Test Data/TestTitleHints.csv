@@ -1,4 +1,5 @@
-# if the last part word/phrase separated by "-" starts with any of these words, color/size will not be stripped from title field
+# if the last word/phrase in a title separated by "-" starts with any of these words,
+# the trailing text is assumed not to be color/size information and will not be stripped.
 ALT
 ANGLE
 ANTLER

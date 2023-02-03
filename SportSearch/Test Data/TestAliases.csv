@@ -1,3 +1,4 @@
+# defines word and phrase aliases to be applied before brand/trademark identification
 # format: <word-or-phrase>[,<word-or-phrase-alias>]
 # the first line simply strips the listed strings from the title field 
 ,1/,2T4T,2T4,24T,2T,4T,46X,47,4 7,12/18/2

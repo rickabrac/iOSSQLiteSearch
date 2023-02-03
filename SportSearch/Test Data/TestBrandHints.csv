@@ -1,4 +1,4 @@
-# brand names and aliases
+# defines brand names and aliases
 # format: [!]<brand-name>[,brand-alias]
 # If a line is preceded by "!", the word/phrase will not be interpreted as a brand name and will not be aliased
 # by an aliases.csv entry, although any trailing aliases in this file will be applied.

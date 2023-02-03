@@ -44,57 +44,6 @@ class SearchView: UIViewController {
 		super.init(coder: aDecoder)
 	}
 	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		configure()
-		if unitTestMode() == false {
-			if viewModel?.db != nil {
-				modelDidUpdate()
-			}
-			if let _ = viewModel?.catalog {
-				viewModel?.loadCatalog()
-			}
-		}
-	}
-	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(false)
-		search.tintColor = traitCollection.userInterfaceStyle == .dark ? .white : .black
-		tableView.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .black : .white
-		self.view.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .black : .white
-	}
-	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(false)
-		if viewModel != nil {
-			if presentCatalogUpdatingAlert, backgroundLoadingAlert == nil {
-				backgroundLoadingAlert = UIAlertController(title: "Notification", message: "\nThe product catalog is being updated.", preferredStyle: .alert)
-				let ok = UIAlertAction(title: "OK", style: .default) { UIAlertAction in
-					self.spinner.isHidden = false
-				}
-				guard let alert = backgroundLoadingAlert else {
-					fatalError("\(name(self)).viewDidAppear: failed to unwrap backgroundLoadingAlert")
-				}
-				alert.addAction(ok)
-				self.present(alert, animated: true) {
-					self.search.becomeFirstResponder()
-				}
-				return
-			}
-		}
-		spinner.isHidden = true
-	}
-	
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(false)
-		UIView.setAnimationsEnabled(false)
-	}
-	
-	override func viewDidDisappear(_ animated: Bool) {
-		super.viewDidDisappear(false)
-		UIView.setAnimationsEnabled(false)
-	}
-	
 	func configure() {
 		if viewModel == nil, unitTestMode() == false {
 			viewModel = SearchViewModel(sqliteDBFileName: "catalog.sqlite")
@@ -283,6 +232,57 @@ class SearchView: UIViewController {
 		navigationController?.navigationBar.addSubview(resultRowsLabel)
 	}
 	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		configure()
+		if unitTestMode() == false {
+			if viewModel?.db != nil {
+				modelDidUpdate()
+			}
+			if let _ = viewModel?.catalog {
+				viewModel?.loadCatalog()
+			}
+		}
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(false)
+		search.tintColor = traitCollection.userInterfaceStyle == .dark ? .white : .black
+		tableView.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .black : .white
+		self.view.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .black : .white
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(false)
+		if viewModel != nil {
+			if presentCatalogUpdatingAlert, backgroundLoadingAlert == nil {
+				backgroundLoadingAlert = UIAlertController(title: "Notification", message: "\nThe product catalog is being updated.", preferredStyle: .alert)
+				let ok = UIAlertAction(title: "OK", style: .default) { UIAlertAction in
+					self.spinner.isHidden = false
+				}
+				guard let alert = backgroundLoadingAlert else {
+					fatalError("\(name(self)).viewDidAppear: failed to unwrap backgroundLoadingAlert")
+				}
+				alert.addAction(ok)
+				self.present(alert, animated: true) {
+					self.search.becomeFirstResponder()
+				}
+				return
+			}
+		}
+		spinner.isHidden = true
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(false)
+		UIView.setAnimationsEnabled(false)
+	}
+	
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(false)
+		UIView.setAnimationsEnabled(false)
+	}
+	
 	private func refreshView() {
 		guard let viewModel = viewModel else { return }
 		if viewModel.sqliteDBFileName != "TestCatalog.sqlite" {
@@ -393,7 +393,7 @@ class SearchView: UIViewController {
 		resultRowsLabel.text = viewModel.resultRowsText
 		stateLabel.text = viewModel.getLoadingState()
 		detailLabel.text = viewModel.getLoadingDetail()
-		switch viewModel.loadingState {
+		switch viewModel.state {
 		case .fetching:
 			loadingView.isHidden = false
 		case .loading:
@@ -428,7 +428,7 @@ class SearchView: UIViewController {
 		}
 		if viewModel.state != .searching {
 			if viewModel.prevSearch == search.text, search.isHidden == false {
-				if viewModel.numberOfRows() == 0, viewModel.prevSearch != "" {
+				if viewModel.numberOfRows == 0, viewModel.prevSearch != "" {
 					noResults.isHidden = false
 				} else {
 					noResults.isHidden = true
@@ -492,7 +492,7 @@ extension SearchView: UITableViewDataSource {
 		if viewModel.state == .searching {
 			return 0
 		}
-		return viewModel.numberOfRows()
+		return viewModel.numberOfRows
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

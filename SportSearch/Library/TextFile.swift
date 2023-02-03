@@ -13,12 +13,13 @@ import Foundation
 class TextFile : Identifiable, Sequence {
 	private var fileURL: URL
 	fileprivate var file: UnsafeMutablePointer<FILE>?
-	var size: UInt64 {
-		return fileURL.fileSize   // see URL extension below
-	}
 	
 	init(_ named: String ) {
 		self.fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent(named)
+	}
+	
+	var size: UInt64 {
+		return fileURL.fileSize   // see URL extension below
 	}
 	
 	func fetch(_ uri: String, completionHandler: @escaping (Bool, String) -> Void) {
@@ -100,6 +101,8 @@ extension TextFile {
 		}
 	}
 }
+
+// MARK: URL extension returns file size
 
 private extension URL {
 	var attributes: [FileAttributeKey : Any]? {

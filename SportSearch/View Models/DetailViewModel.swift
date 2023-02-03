@@ -1,5 +1,5 @@
 //
-//  ProductViewModel.swift
+//  DetailViewModel.swift
 //	SportSearch
 //  Created by Rick Tyler
 //
@@ -179,15 +179,16 @@ class DetailViewModel: Model {
 		return text
 	}
 	
+	var numberOfRows: Int {
+		return brands.count > 1 ? brands.count : result.count
+	}
+	
 	func getItem(forRowAt indexPath: IndexPath) -> Item {
 		return result[indexPath.row]
 	}
 	
-	func numberOfRows() -> Int {
-		return brands.count > 1 ? brands.count : result.count
-	}
-	
 	func shouldSelect(rowAt indexPath: IndexPath) -> Bool {
+		// true if selecting row will generate more results
 		if brands.count < 2, prices.count < 2, colors.count < 2 {
 			return false
 		}
@@ -197,7 +198,7 @@ class DetailViewModel: Model {
 		return true
 	}
 	
-	func leftText(forRowAt indexPath: IndexPath) -> String {
+	func getLeftText(forRowAt indexPath: IndexPath) -> String {
 		let item = result[indexPath.row]
 		if brands.count < 2, prices.count < 2, colors.count < 2 {
 			return item.serial
@@ -211,7 +212,7 @@ class DetailViewModel: Model {
 		return item.serial
 	}
 	
-	func centerText(forRowAt indexPath: IndexPath) -> String {
+	func getCenterText(forRowAt indexPath: IndexPath) -> String {
 		if brands.count == 1, prices.count == 1, colors.count == 1 {
 			return ""
 		}
@@ -231,7 +232,7 @@ class DetailViewModel: Model {
 		return item.color
 	}
 	
-	func rightText(forRowAt indexPath: IndexPath) -> String {
+	func getRightText(forRowAt indexPath: IndexPath) -> String {
 		let item = result[indexPath.row]
 		if brands.count < 2, prices.count < 2, colors.count < 2 {
 			return item.size

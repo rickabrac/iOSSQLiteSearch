@@ -28,6 +28,10 @@ class SQLiteQuery {
 		sqliteQueries.insert(self.sql)
 	}
 	
+	var errorMessage: String {
+		return String(cString: sqlite3_errmsg(query))
+	}
+	
 	// Executes the SQL statement. For select, caller must step throught results by calling repeatedly
 	// until return value is false. After any successful call, use get...() methods to retrieve values
 	// by column index.
@@ -147,10 +151,6 @@ class SQLiteQuery {
 	
 	func getInt64(colIdx: Int32) -> Int64 {
 		return sqlite3_column_int64(query, colIdx)
-	}
-	
-	var errorMessage: String {
-		return String(cString: sqlite3_errmsg(query))
 	}
 	
 	func clearBindings() {

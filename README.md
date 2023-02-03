@@ -79,20 +79,6 @@ hosted on tyler.org:
   
 • Handle brand trademarks (see above)
 
-## Interface
-
-• Enter one or more search terms (leave space at end to perform exact match on last term)
-
-  to search for products that match all terms
-  
-• To filter by brand, include "/nike" for example to only see matching Nike products.
-
-• To list all brands, enter "/"
-
-• To search by serial number, enter "#<serial-number-fragment>"
-
-• To perform an exact-match search on the trailing term, include a trailing space.
-
 ## Testing
 
 • This app uses the snapshot-testing package for view controller tests instead of a traditional XCode UI test.

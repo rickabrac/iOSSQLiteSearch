@@ -4,8 +4,6 @@
 //  Created by Rick Tyler
 //
 
-// ### DISPLAY HELP ON LAUNCH OR WHEN "?" TYPED ###
-
 import Foundation
 import SQLite3
 
@@ -58,6 +56,56 @@ class SearchViewModel: Model {
 				// no-op
 			}
 		}
+	}
+	
+	var progress: Float {
+		set {
+			_progress = newValue
+		}
+		get {
+			if catalog == nil {
+				return _progress
+			}
+			guard let catalog = catalog else {
+				fatalError("\(name(self)).updateCatalog: failed to unwrap catalog")
+			}
+			return catalog.progress
+		}
+	}
+	
+	var state: CatalogState {
+		get {
+			return _state
+		}
+		set {
+			_state = newValue
+			observer?.modelDidUpdate()
+		}
+	}
+	
+	var numberOfRows: Int {
+		return state == .searching ? 0 : result.count
+	}
+	
+	var loadingState: CatalogState {
+		if catalog == nil {
+			return _state
+		}
+		guard let catalog = catalog else {
+			fatalError("\(name(self)).updateCatalog: failed to unwrap catalog")
+		}
+		return catalog.state
+	}
+	
+	func loadCatalog() {
+		guard let catalog = catalog else {
+			fatalError("\(name(self)).updateCatalog: failed to unwrap catalog")
+		}
+		catalog.observer = observer
+		if self.db != nil {
+			sqliteDBFileName = "import.sqlite"
+		}
+		catalog.load(into: sqliteDBFileName)
 	}
 	
 	func updateCatalog() -> Bool {
@@ -115,52 +163,6 @@ class SearchViewModel: Model {
 			self.search(prevSearch)
 		}
 		return true
-	}
-	
-	var progress: Float {
-		set {
-			_progress = newValue
-		}
-		get {
-			if catalog == nil {
-				return _progress
-			}
-			guard let catalog = catalog else {
-				fatalError("\(name(self)).updateCatalog: failed to unwrap catalog")
-			}
-			return catalog.progress
-		}
-	}
-	
-	var state: CatalogState {
-		get {
-			return _state
-		}
-		set {
-			_state = newValue
-			observer?.modelDidUpdate()
-		}
-	}
-	
-	var loadingState: CatalogState {
-		if catalog == nil {
-			return _state
-		}
-		guard let catalog = catalog else {
-			fatalError("\(name(self)).updateCatalog: failed to unwrap catalog")
-		}
-		return catalog.state
-	}
-	
-	func loadCatalog() {
-		guard let catalog = catalog else {
-			fatalError("\(name(self)).updateCatalog: failed to unwrap catalog")
-		}
-		catalog.observer = observer
-		if self.db != nil {
-			sqliteDBFileName = "import.sqlite"
-		}
-		catalog.load(into: sqliteDBFileName)
 	}
 	
 	func search(_ input: String ) {
@@ -481,10 +483,6 @@ class SearchViewModel: Model {
 			return false
 		}
 		return result[indexPath.row].price == "" ? true : false
-	}
-	
-	func numberOfRows() -> Int {
-		return state == .searching ? 0 : result.count
 	}
 	
 	func getItemViewModel(forRowAt indexPath: IndexPath) -> DetailViewModel {

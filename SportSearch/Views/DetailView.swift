@@ -66,18 +66,18 @@ extension DetailView: UITableViewDataSource {
 	}
 
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		guard let numRows = viewModel?.numberOfRows() else { return 0 }
+		guard let numRows = viewModel?.numberOfRows else { return 0 }
 		return numRows
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let cell = tableView.dequeueReusableCell(withIdentifier: "DetailRow", for: indexPath) as? DetailRow else { return UITableViewCell() }
 		cell.leftLabel.font = UIFont.systemFont(ofSize: 14.0)
-		cell.leftLabel.text = viewModel?.leftText(forRowAt: indexPath)
+		cell.leftLabel.text = viewModel?.getLeftText(forRowAt: indexPath)
 		cell.centerLabel.font = UIFont.systemFont(ofSize: 14.0)
-		cell.centerLabel.text = viewModel?.centerText(forRowAt: indexPath)
+		cell.centerLabel.text = viewModel?.getCenterText(forRowAt: indexPath)
 		cell.rightLabel.font = UIFont.systemFont(ofSize: 14.0)
-		cell.rightLabel.text = viewModel?.rightText(forRowAt: indexPath)
+		cell.rightLabel.text = viewModel?.getRightText(forRowAt: indexPath)
 		return cell
 	}
 }

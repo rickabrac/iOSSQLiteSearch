@@ -3,8 +3,8 @@
 //  SportSearch
 //  Created by Rick Tyler
 //
-//  Fetch sporting goods product catalog from the cloud and insert resulting product catalog
-//  into optimized SQLite database.
+//  Fetches the sporting goods catalog input file and associated metadata from the cloud
+//  and inserts the resulting product catalog into an optimized SQLite database.
 //
 
 import Foundation
@@ -21,7 +21,6 @@ class Catalog: Model {
 	var loopIndex = 0
 	var loopCount: Int = 0
 	private var dbPath: String = ""
-	private var loadingState: CatalogState
 	private let catalogURI: String
 	private let catalogFileName: String
 	private var catalogCSV: TextFile? = nil
@@ -47,17 +46,24 @@ class Catalog: Model {
 	private var colorIds = [String: Int64]()
 	private var sizeIds = [String: Int64]()
 	private var brandItems = [String: Set<String>]()    // [brand : set of distinct Items]
+	private var _state: CatalogState
 	
-	var isInMemoryDB: Bool {
-		return sqliteDBFileName == ":memory:"
+	required init(_ catalogURI: String, aliasesURI: String, titleHintsURI: String, brandHintsURI: String, brandMarksURI: String) {
+		self._state = .empty
+		self.catalogURI = catalogURI
+		self.catalogFileName = String(catalogURI.split(separator: "/").last!)
+		self.aliasesURI = aliasesURI
+		self.titleHintsURI = titleHintsURI
+		self.brandHintsURI = brandHintsURI
+		self.brandMarksURI = brandMarksURI
 	}
 	
 	var state: CatalogState {
 		get {
-			return loadingState
+			return _state
 		}
 		set {
-			loadingState = newValue
+			_state = newValue
 			observer?.modelDidUpdate()
 		}
 	}
@@ -74,15 +80,9 @@ class Catalog: Model {
 			return 0.0
 		}
 	}
-	
-	required init(_ catalogURI: String, aliasesURI: String, titleHintsURI: String, brandHintsURI: String, brandMarksURI: String) {
-		self.loadingState = .empty
-		self.catalogURI = catalogURI
-		self.catalogFileName = String(catalogURI.split(separator: "/").last!)
-		self.aliasesURI = aliasesURI
-		self.titleHintsURI = titleHintsURI
-		self.brandHintsURI = brandHintsURI
-		self.brandMarksURI = brandMarksURI
+
+	var isInMemoryDB: Bool {
+		return sqliteDBFileName == ":memory:"
 	}
 	
 	func load(into sqliteDBFileName: String) {
@@ -304,155 +304,6 @@ class Catalog: Model {
 		}
 	}
 	
-	private func stripDashesAndSlashes(_ title: String) -> String {
-		var stripped = ""
-		let splitTitle = title.split(separator: " ")
-		for _word in splitTitle {
-			var word = _word
-			while word.last == "-" || word.last == "/" {
-				word.removeLast()
-			}
-			if word == "" {
-				continue
-			}
-			if title.count > 0 {
-				stripped += " "
-			}
-			stripped += word
-		}
-		return stripped.trimmingCharacters(in: .whitespaces)
-	}
-	
-	private func stripDashes(_ title: String) -> String {
-		var stripped = ""
-		let splitTitle = title.split(separator: " ")
-		for _word in splitTitle {
-			var word = _word
-			while word.last == "-" {
-				word.removeLast()
-			}
-			if word == "" {
-				continue
-			}
-			if title.count > 0 {
-				stripped += " "
-			}
-			stripped += word
-		}
-		return stripped.trimmingCharacters(in: .whitespaces)
-	}
-	
-	private func stripSlashes(_ title: String) -> String {
-		var stripped = ""
-		let splitTitle = title.split(separator: " ")
-		for _word in splitTitle {
-			var word = _word
-			while word.last == "/" {
-				word.removeLast()
-			}
-			if word == "" {
-				continue
-			}
-			if title.count > 0 {
-				stripped += " "
-			}
-			stripped += word
-		}
-		return stripped.trimmingCharacters(in: .whitespaces)
-	}
-	
-	private func aliasedTitle(_ rawTitle: String) -> String {
-		let titleWords = rawTitle.split(separator: " ")
-		var aliased = ""
-		var i = 0
-		while i < titleWords.count {
-			for j in (i..<i+maxAliasWords).reversed() {
-				if j >= titleWords.count {
-					continue
-				}
-				let maybeAlias = titleWords[i...j].joined(separator: " ")
-				if notBrands.contains(maybeAlias) {
-					if aliased != "", maybeAlias != "" {
-						aliased += " "
-					}
-					aliased += maybeAlias
-					i += maybeAlias.split(separator: " ").count
-					break
-				} else if let alias = alias[maybeAlias] {
-					if aliased != "", alias != "" {
-						aliased += " "
-					}
-					aliased += alias
-					i += maybeAlias.split(separator: " ").count
-					break
-				} else if maybeAlias.split(separator: " ").count == 1 {
-					if aliased != "" {
-						aliased += " "
-					}
-					aliased += maybeAlias
-					i += 1
-				}
-			}
-		}
-		if aliased.last == "-" {
-			aliased.removeLast()
-		}
-		return aliased
-	}
-	
-	private func trimTitleSuffix(_ string: String) -> String {
-		var title = string
-		if title.hasSuffix(" 1/4") || title.hasSuffix(" 1/2") || title.hasSuffix(" 3/4") {
-			title += " ZIP"
-		} else if title.hasSuffix("2T") {
-			title.removeLast()
-			title.removeLast()
-		} else if title.hasSuffix("4/7") || title.hasSuffix("46X") {
-			title.removeLast()
-			title.removeLast()
-			title.removeLast()
-		} else if title.hasSuffix("2T/4") {
-			title.removeLast()
-			title.removeLast()
-			title.removeLast()
-			title.removeLast()
-		} else if title.hasSuffix("2T/4T") || title.hasSuffix("1224M") {
-			title.removeLast()
-			title.removeLast()
-			title.removeLast()
-			title.removeLast()
-			title.removeLast()
-		}
-		return stripSlashes(title)
-	}
-	
-private var notStripped = Set<String>()
-private var stripped = [String:Int]()
-
-	private func normalizedTitle(_ rawTitle: String) -> String {
-		// strip any trailing size/color spec following "-"
-		let fixedRawTitle = rawTitle.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: "''", with: "\"")
-		var splitRawTitle = fixedRawTitle.split(separator: "-")
-		if splitRawTitle.count == 1 {
-			return stripDashes(fixedRawTitle)
-		}
-		let numDashes = splitRawTitle.count - 1
-		if numDashes == 0 {
-			return stripDashes(fixedRawTitle)
-		}
-		// one or more dashes if here
-		let lastPart = String(splitRawTitle[numDashes])
-		if let first = lastPart.first, first.isWhitespace {
-			return stripDashes(fixedRawTitle)
-		}
-		let firstWordOfLastPart = String(lastPart.split(separator: " ")[0])
-		if titleHints.contains(firstWordOfLastPart) == false, brandAlias[firstWordOfLastPart] == nil {
-			splitRawTitle.removeLast()
-			return stripDashes(splitRawTitle.joined(separator: "-").trimmingCharacters(in: .whitespaces))
-		}
-		return stripDashes(splitRawTitle.joined(separator: "-").trimmingCharacters(in: .whitespaces))
-	}
-	
 	private func importSource() {
 		if sqliteDBFileName == ":memory:"{
 			db = SQLiteQuery.dbOpen(path: sqliteDBFileName, flags: SQLITE_OPEN_READWRITE | SQLITE_OPEN_NOMUTEX | SQLITE_OPEN_MEMORY | SQLITE_OPEN_URI )!
@@ -509,9 +360,9 @@ private var stripped = [String:Int]()
 			let fields = line.uppercased().split(separator: ",")
 			let serial = String(fields[0])
 			let rawTitle = String(fields[1]).trimmingCharacters(in: .whitespaces).uppercased()
-			let normalizedTitle = normalizedTitle(rawTitle)
-			let aliasedTitle = aliasedTitle(normalizedTitle)
-			var title = trimTitleSuffix(aliasedTitle)
+			let normalizedTitle = getNormalizedTitle(rawTitle)
+			let aliasedTitle = getAliasedTitle(normalizedTitle)
+			var title = getStrippedTitle(aliasedTitle)
 			let listPrice = Float(String(fields[2]))!
 			let salePrice = Float(String(fields[3]))!
 			let price = String(salePrice < listPrice ? fields[2] : fields[3])
@@ -720,5 +571,132 @@ private var stripped = [String:Int]()
 		Size(db).createSQLiteIndexes()
 
 		state = .ready
+	}
+	
+	private func stripDashesFromTitle(_ title: String) -> String {
+		var stripped = ""
+		let splitTitle = title.split(separator: " ")
+		for _word in splitTitle {
+			var word = _word
+			while word.last == "-" {
+				word.removeLast()
+			}
+			if word == "" {
+				continue
+			}
+			if title.count > 0 {
+				stripped += " "
+			}
+			stripped += word
+		}
+		return stripped.trimmingCharacters(in: .whitespaces)
+	}
+	
+	private func stripSlashesFromTitle(_ title: String) -> String {
+		var stripped = ""
+		let splitTitle = title.split(separator: " ")
+		for _word in splitTitle {
+			var word = _word
+			while word.last == "/" {
+				word.removeLast()
+			}
+			if word == "" {
+				continue
+			}
+			if title.count > 0 {
+				stripped += " "
+			}
+			stripped += word
+		}
+		return stripped.trimmingCharacters(in: .whitespaces)
+	}
+	
+	private func getAliasedTitle(_ rawTitle: String) -> String {
+		let titleWords = rawTitle.split(separator: " ")
+		var aliased = ""
+		var i = 0
+		while i < titleWords.count {
+			for j in (i..<i+maxAliasWords).reversed() {
+				if j >= titleWords.count {
+					continue
+				}
+				let maybeAlias = titleWords[i...j].joined(separator: " ")
+				if notBrands.contains(maybeAlias) {
+					if aliased != "", maybeAlias != "" {
+						aliased += " "
+					}
+					aliased += maybeAlias
+					i += maybeAlias.split(separator: " ").count
+					break
+				} else if let alias = alias[maybeAlias] {
+					if aliased != "", alias != "" {
+						aliased += " "
+					}
+					aliased += alias
+					i += maybeAlias.split(separator: " ").count
+					break
+				} else if maybeAlias.split(separator: " ").count == 1 {
+					if aliased != "" {
+						aliased += " "
+					}
+					aliased += maybeAlias
+					i += 1
+				}
+			}
+		}
+		if aliased.last == "-" {
+			aliased.removeLast()
+		}
+		return aliased
+	}
+	
+	private func getStrippedTitle(_ string: String) -> String {
+		// strips extraneous trailing text
+		var title = string
+		if title.hasSuffix(" 1/4") || title.hasSuffix(" 1/2") || title.hasSuffix(" 3/4") {
+			title += " ZIP"
+		} else if title.hasSuffix("2T") {
+			title.removeLast()
+			title.removeLast()
+		} else if title.hasSuffix("4/7") || title.hasSuffix("46X") {
+			title.removeLast()
+			title.removeLast()
+			title.removeLast()
+		} else if title.hasSuffix("2T/4") {
+			title.removeLast()
+			title.removeLast()
+			title.removeLast()
+			title.removeLast()
+		} else if title.hasSuffix("2T/4T") || title.hasSuffix("1224M") {
+			title.removeLast()
+			title.removeLast()
+			title.removeLast()
+			title.removeLast()
+			title.removeLast()
+		}
+		return stripSlashesFromTitle(title)
+	}
+
+	private func getNormalizedTitle(_ rawTitle: String) -> String {
+		let fixedRawTitle = rawTitle.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: "''", with: "\"")
+		var splitRawTitle = fixedRawTitle.split(separator: "-")
+		if splitRawTitle.count == 1 {
+			return stripDashesFromTitle(fixedRawTitle)
+		}
+		let numDashes = splitRawTitle.count - 1
+		if numDashes == 0 {
+			return stripDashesFromTitle(fixedRawTitle)
+		}
+		// one or more dashes if here
+		let lastPart = String(splitRawTitle[numDashes])
+		if let first = lastPart.first, first.isWhitespace {
+			return stripDashesFromTitle(fixedRawTitle)
+		}
+		let firstWordOfLastPart = String(lastPart.split(separator: " ")[0])
+		if titleHints.contains(firstWordOfLastPart) == false, brandAlias[firstWordOfLastPart] == nil {
+			splitRawTitle.removeLast()
+			return stripDashesFromTitle(splitRawTitle.joined(separator: "-").trimmingCharacters(in: .whitespaces))
+		}
+		return stripDashesFromTitle(splitRawTitle.joined(separator: "-").trimmingCharacters(in: .whitespaces))
 	}
 }
