@@ -24,8 +24,8 @@ class SearchViewModel: Model {
 	
 	init(
 		sqliteDBFileName: String = "",                                               // sqlite database file name
-//		catalogURI: String = "http://tyler.org/iOSSportSearch/catalog.csv",          // sporting goods catalog
-		catalogURI: String = "http://tyler.org/iOSSportSearch/test.csv",             // test sporting goods catalog
+		catalogURI: String = "http://tyler.org/iOSSportSearch/catalog.csv",          // sporting goods catalog
+//		catalogURI: String = "http://tyler.org/iOSSportSearch/test.csv",             // test sporting goods catalog
 		aliasesURI: String = "http://tyler.org/iOSSportSearch/aliases.csv",          // word and phrase aliases
 		titleHintsURI: String = "http://tyler.org/iOSSportSearch/titlehints.csv",    // used to strip color/size information from title
 		brandHintsURI: String = "http://tyler.org/iOSSportSearch/brandhints.csv",    // brand name overrides and aliases
