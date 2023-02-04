@@ -221,11 +221,11 @@ class SearchView: UIViewController {
 		])
 		
 		// configure latencyLabel and resultRowsLabel
-		latencyLabel.frame = CGRect(x: 25, y: 0, width: 100, height: 20)
+		latencyLabel.frame = CGRect(x: 20, y: 0, width: 100, height: 20)
 		latencyLabel.font = UIFont.systemFont(ofSize: 8.0)
 		latencyLabel.text = ""
 		navigationController?.navigationBar.addSubview(latencyLabel)
-		resultRowsLabel.frame = CGRect(x: self.view.frame.size.width - 130, y: 0, width: 100, height: 20)
+		resultRowsLabel.frame = CGRect(x: self.view.frame.size.width - 120, y: 0, width: 100, height: 20)
 		resultRowsLabel.font = UIFont.systemFont(ofSize: 8.0)
 		resultRowsLabel.text = ""
 		resultRowsLabel.textAlignment = .right

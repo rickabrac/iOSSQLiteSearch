@@ -24,8 +24,8 @@ class SearchViewModel: Model {
 	
 	init(
 		sqliteDBFileName: String = "",                                               // sqlite database file name
-		catalogURI: String = "http://tyler.org/iOSSportSearch/catalog.csv",          // sporting goods catalog
-//		catalogURI: String = "http://tyler.org/iOSSportSearch/test.csv",             // test sporting goods catalog
+//		catalogURI: String = "http://tyler.org/iOSSportSearch/catalog.csv",          // sporting goods catalog
+		catalogURI: String = "http://tyler.org/iOSSportSearch/test.csv",             // test sporting goods catalog
 		aliasesURI: String = "http://tyler.org/iOSSportSearch/aliases.csv",          // word and phrase aliases
 		titleHintsURI: String = "http://tyler.org/iOSSportSearch/titlehints.csv",    // used to strip color/size information from title
 		brandHintsURI: String = "http://tyler.org/iOSSportSearch/brandhints.csv",    // brand name overrides and aliases
@@ -73,28 +73,21 @@ class SearchViewModel: Model {
 		}
 	}
 	
+	var numberOfRows: Int {
+		return state == .searching ? 0 : result.count
+	}
+	
 	var state: CatalogState {
 		get {
-			return _state
+			guard let catalog = catalog else {
+				return _state
+			}
+			return catalog.state
 		}
 		set {
 			_state = newValue
 			observer?.modelDidUpdate()
 		}
-	}
-	
-	var numberOfRows: Int {
-		return state == .searching ? 0 : result.count
-	}
-	
-	var loadingState: CatalogState {
-		if catalog == nil {
-			return _state
-		}
-		guard let catalog = catalog else {
-			fatalError("\(name(self)).updateCatalog: failed to unwrap catalog")
-		}
-		return catalog.state
 	}
 	
 	func loadCatalog() {
@@ -416,7 +409,7 @@ class SearchViewModel: Model {
 	}
 	
 	func getLoadingState() -> String {
-		switch loadingState {
+		switch state {
 		case .fetching:
 			return "   Fetching..."
 		case .loading:
@@ -430,10 +423,10 @@ class SearchViewModel: Model {
 	
 	func getLoadingDetail() -> String {
 		let percent = Int(100 * progress)
-		if loadingState == .indexing {
+		if state == .indexing {
 			return ""
 		}
-		if loadingState == .loading, let catalog = catalog {
+		if state == .loading, let catalog = catalog {
 			return "\(catalog.loopIndex) / \(catalog.loopCount) records (\(percent)%)"
 		}
 		return "\(percent)%"
