@@ -143,7 +143,7 @@
 		1D0CED2F298C39EA00C0D03A /* SportSearch */ = {
 			isa = PBXGroup;
 			children = (
-				1DE4E2C9298D9D6300067FFD /* Library */,
+				1DE4E2C9298D9D6300067FFD /* Common */,
 				1DE4E2CB298D9E4300067FFD /* Models */,
 				1DE4E2CD298D9F0000067FFD /* Views */,
 				1DE4E2CC298D9EAA00067FFD /* View Models */,
@@ -167,7 +167,7 @@
 			path = SportSearchTests;
 			sourceTree = "<group>";
 		};
-		1DE4E2C9298D9D6300067FFD /* Library */ = {
+		1DE4E2C9298D9D6300067FFD /* Common */ = {
 			isa = PBXGroup;
 			children = (
 				1D0CED68298C3B4B00C0D03A /* Model.swift */,
@@ -177,7 +177,7 @@
 				1D0CED6D298C3B7800C0D03A /* TextFile.swift */,
 				1D0CED67298C3B4B00C0D03A /* Utility.swift */,
 			);
-			path = Library;
+			path = Common;
 			sourceTree = "<group>";
 		};
 		1DE4E2CB298D9E4300067FFD /* Models */ = {
