@@ -254,6 +254,8 @@ class SearchView: UIViewController {
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(false)
+		latencyLabel.isHidden = false
+		resultRowsLabel.isHidden = false
 		if viewModel != nil {
 			if presentCatalogUpdatingAlert, backgroundLoadingAlert == nil {
 				backgroundLoadingAlert = UIAlertController(title: "Notification", message: "\nThe product catalog is being updated.", preferredStyle: .alert)
@@ -276,6 +278,8 @@ class SearchView: UIViewController {
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(false)
 		UIView.setAnimationsEnabled(false)
+		latencyLabel.isHidden = true
+		resultRowsLabel.isHidden = true
 	}
 	
 	override func viewDidDisappear(_ animated: Bool) {
