@@ -12,7 +12,7 @@
 		1D0CED38298C39EA00C0D03A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D0CED36298C39EA00C0D03A /* Main.storyboard */; };
 		1D0CED3A298C39EC00C0D03A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D0CED39298C39EC00C0D03A /* Assets.xcassets */; };
 		1D0CED3D298C39EC00C0D03A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D0CED3B298C39EC00C0D03A /* LaunchScreen.storyboard */; };
-		1D0CED6A298C3B4B00C0D03A /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0CED67298C3B4B00C0D03A /* Shared.swift */; };
+		1D0CED6A298C3B4B00C0D03A /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0CED67298C3B4B00C0D03A /* Common.swift */; };
 		1D0CED6B298C3B4B00C0D03A /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0CED68298C3B4B00C0D03A /* Model.swift */; };
 		1D0CED6C298C3B4B00C0D03A /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0CED69298C3B4B00C0D03A /* Observer.swift */; };
 		1D0CED70298C3B7800C0D03A /* TextFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0CED6D298C3B7800C0D03A /* TextFile.swift */; };
@@ -67,7 +67,7 @@
 		1D0CED3C298C39EC00C0D03A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1D0CED3E298C39EC00C0D03A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1D0CED43298C39EC00C0D03A /* SportSearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SportSearchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		1D0CED67298C3B4B00C0D03A /* Shared.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
+		1D0CED67298C3B4B00C0D03A /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		1D0CED68298C3B4B00C0D03A /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		1D0CED69298C3B4B00C0D03A /* Observer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
 		1D0CED6D298C3B7800C0D03A /* TextFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFile.swift; sourceTree = "<group>"; };
@@ -143,7 +143,6 @@
 		1D0CED2F298C39EA00C0D03A /* SportSearch */ = {
 			isa = PBXGroup;
 			children = (
-				1DE4E2CA298D9D8200067FFD /* Foundation */,
 				1DE4E2C9298D9D6300067FFD /* Library */,
 				1DE4E2CB298D9E4300067FFD /* Models */,
 				1DE4E2CD298D9F0000067FFD /* Views */,
@@ -171,21 +170,14 @@
 		1DE4E2C9298D9D6300067FFD /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				1D0CED68298C3B4B00C0D03A /* Model.swift */,
+				1D0CED69298C3B4B00C0D03A /* Observer.swift */,
+				1D0CED67298C3B4B00C0D03A /* Common.swift */,
 				1D0CED6E298C3B7800C0D03A /* SQLiteQuery.swift */,
 				1D0CED6F298C3B7800C0D03A /* SQLiteTable.swift */,
 				1D0CED6D298C3B7800C0D03A /* TextFile.swift */,
 			);
 			path = Library;
-			sourceTree = "<group>";
-		};
-		1DE4E2CA298D9D8200067FFD /* Foundation */ = {
-			isa = PBXGroup;
-			children = (
-				1D0CED68298C3B4B00C0D03A /* Model.swift */,
-				1D0CED69298C3B4B00C0D03A /* Observer.swift */,
-				1D0CED67298C3B4B00C0D03A /* Shared.swift */,
-			);
-			path = Foundation;
 			sourceTree = "<group>";
 		};
 		1DE4E2CB298D9E4300067FFD /* Models */ = {
@@ -377,7 +369,7 @@
 				1D0CED6B298C3B4B00C0D03A /* Model.swift in Sources */,
 				1D0CED6C298C3B4B00C0D03A /* Observer.swift in Sources */,
 				1D0CED31298C39EA00C0D03A /* AppDelegate.swift in Sources */,
-				1D0CED6A298C3B4B00C0D03A /* Shared.swift in Sources */,
+				1D0CED6A298C3B4B00C0D03A /* Common.swift in Sources */,
 				1D0CED33298C39EA00C0D03A /* SceneDelegate.swift in Sources */,
 				1D0CED7E298C3B8B00C0D03A /* Catalog.swift in Sources */,
 				1D0CED72298C3B7800C0D03A /* SQLiteTable.swift in Sources */,
