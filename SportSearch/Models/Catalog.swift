@@ -12,6 +12,15 @@ import SQLite3
 import Combine
 import UIKit
 
+enum CatalogState {
+	case empty        // initialized
+	case failed       // download failed w/out cached db
+	case fetching     // fetching catalog and metadata
+	case loading      // loading into SQLite db
+	case indexing     // indexing database
+	case ready        // ready to search
+}
+
 class Catalog: Model {
 	internal var observer: Observer?
 	var sqliteDBFileName: String = ""
@@ -20,6 +29,7 @@ class Catalog: Model {
 	var bytesScanned: UInt = 0
 	var loopIndex = 0
 	var loopCount: Int = 0
+	var loadingInBackground = false
 	private var dbPath: String = ""
 	private let catalogURI: String
 	private let catalogFileName: String
@@ -74,7 +84,7 @@ class Catalog: Model {
 			return 0.0
 		case .loading:
 			return loopCount == 0 ? 0.5 : Float(loopIndex) / Float(loopCount)
-		case .indexing, .ready, .searching:
+		case .indexing, .ready:
 			return 1.0
 		case .failed:
 			return 0.0

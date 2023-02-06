@@ -1,41 +1,13 @@
 //
-//  Shared.swift
+//  Utility.swift
 //  SportSearch
 //  Created by Rick Tyler
 //
 
 import Foundation
 
-enum CatalogState {
-	case empty        // initialized
-	case failed       // download failed w/out cached db
-	case fetching     // fetching catalog and metadata
-	case loading      // loading into SQLite db
-	case indexing     // indexing database
-	case ready        // ready to search
-	case searching    // searching
-}
-
 func name(_ obj: AnyObject) -> String {
 	return String(NSStringFromClass(type(of: obj)).split(separator: ".")[1])
-}
-
-func unitTestMode() -> Bool {
-	let env = ProcessInfo.processInfo.environment
-	if env["XCTestConfigurationFilePath"] != nil {
-		return true
-	}
-	return false
-}
-
-protocol SynchronousDispatchQueue {
-	func execute(execute work: @escaping @convention(block) () -> Void)
-}
-
-extension DispatchQueue: SynchronousDispatchQueue {
-	func execute(execute work: @escaping @convention(block) () -> Void) {
-		async(group: nil, qos: .unspecified, flags: [], execute: work)
-	}
 }
 
 func currentTimeMillis() -> Int64 {
@@ -61,4 +33,12 @@ func copyBundleFileToDocs(_ fileName: String) {
 	} catch {
 		fatalError("copyBundleFileToDocuments: failed to copy bundle file")
 	}
+}
+
+func unitTestMode() -> Bool {
+	let env = ProcessInfo.processInfo.environment
+	if env["XCTestConfigurationFilePath"] != nil {
+		return true
+	}
+	return false
 }

@@ -395,8 +395,8 @@ class SearchView: UIViewController {
 		}
 		latencyLabel.text = viewModel.latencyText
 		resultRowsLabel.text = viewModel.resultRowsText
-		stateLabel.text = viewModel.getLoadingState()
-		detailLabel.text = viewModel.getLoadingDetail()
+		stateLabel.text = viewModel.loadingState
+		detailLabel.text = viewModel.loadingDetail
 		switch viewModel.state {
 		case .fetching:
 			loadingView.isHidden = false
@@ -430,9 +430,9 @@ class SearchView: UIViewController {
 		default:
 			break
 		}
-		if viewModel.state != .searching {
+		if viewModel.isSearching == false {
 			if viewModel.prevSearch == search.text, search.isHidden == false {
-				if viewModel.numberOfRows == 0, viewModel.prevSearch != "" {
+				if viewModel.numberOfRows == 0, viewModel.prevSearch != "", viewModel.isSearching == false {
 					noResults.isHidden = false
 				} else {
 					noResults.isHidden = true
@@ -472,7 +472,7 @@ extension SearchView: UITextFieldDelegate {
 	
 	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 		guard let viewModel = viewModel else { return false }
-		if viewModel.state == .searching {
+		if viewModel.isSearching {
 			return false
 		}
 		if string == "?", let helpAlert = helpAlert {
@@ -493,7 +493,7 @@ extension SearchView: UITableViewDataSource {
 
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		guard let viewModel = viewModel else { return 0 }
-		if viewModel.state == .searching {
+		if viewModel.isSearching {
 			return 0
 		}
 		return viewModel.numberOfRows

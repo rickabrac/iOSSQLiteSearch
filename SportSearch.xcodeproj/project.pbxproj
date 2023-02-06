@@ -46,6 +46,7 @@
 		1D7F40CA298C3DF600943386 /* SQLiteQueryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7F40C3298C3DF600943386 /* SQLiteQueryTests.swift */; };
 		1D7F40CB298C3DF600943386 /* DetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7F40C4298C3DF600943386 /* DetailViewModelTests.swift */; };
 		1DE4E2C8298C483600067FFD /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 1DE4E2C7298C483600067FFD /* README.md */; };
+		1DE4E2D12991B05A00067FFD /* DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE4E2D02991B05A00067FFD /* DispatchQueue.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,6 +101,7 @@
 		1D7F40C3298C3DF600943386 /* SQLiteQueryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteQueryTests.swift; sourceTree = "<group>"; };
 		1D7F40C4298C3DF600943386 /* DetailViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewModelTests.swift; sourceTree = "<group>"; };
 		1DE4E2C7298C483600067FFD /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		1DE4E2D02991B05A00067FFD /* DispatchQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchQueue.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +178,7 @@
 				1D0CED6F298C3B7800C0D03A /* SQLiteTable.swift */,
 				1D0CED6D298C3B7800C0D03A /* TextFile.swift */,
 				1D0CED67298C3B4B00C0D03A /* Utility.swift */,
+				1DE4E2D02991B05A00067FFD /* DispatchQueue.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -360,6 +363,7 @@
 				1D0CED89298C3BB000C0D03A /* SearchView.swift in Sources */,
 				1D0CED7A298C3B8B00C0D03A /* Item.swift in Sources */,
 				1D0CED87298C3BB000C0D03A /* DetailView.swift in Sources */,
+				1DE4E2D12991B05A00067FFD /* DispatchQueue.swift in Sources */,
 				1D0CED70298C3B7800C0D03A /* TextFile.swift in Sources */,
 				1D0CED88298C3BB000C0D03A /* SearchRow.swift in Sources */,
 				1D0CED79298C3B8B00C0D03A /* Brand.swift in Sources */,

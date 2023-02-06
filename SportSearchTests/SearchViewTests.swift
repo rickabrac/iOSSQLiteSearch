@@ -8,14 +8,14 @@ import XCTest
 import SnapshotTesting
 @testable import SportSearch
 
-private final class MockDispatchQueue: SynchronousDispatchQueue {
+private final class TestDispatchQueue: SynchronousDispatchQueue {
 	func execute(execute work: @escaping @convention(block) () -> Void) {
 		work()
 	}
 }
 
 class SearchViewTests: XCTestCase {
-	let vc = SearchView(dispatchQueue: MockDispatchQueue.self())
+	let vc = SearchView(dispatchQueue: TestDispatchQueue.self())
 	var vm: SearchViewModel!
 	let light = UITraitCollection(userInterfaceStyle: UIUserInterfaceStyle.light)
 	let dark = UITraitCollection(userInterfaceStyle: UIUserInterfaceStyle.dark)
@@ -28,7 +28,7 @@ class SearchViewTests: XCTestCase {
 		vm = SearchViewModel(sqliteDBFileName: "TestCatalog.sqlite")
 		vc.viewModel = vm
 		vc.loadViewIfNeeded()
-		vm.dispatchQueue = MockDispatchQueue.self()
+		vm.dispatchQueue = TestDispatchQueue.self()
 		vm.observer = vc
 		vm.progress = 0.5
 		try super.setUpWithError()

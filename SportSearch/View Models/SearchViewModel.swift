@@ -9,13 +9,14 @@ import SQLite3
 
 class SearchViewModel: Model {
 	var db: OpaquePointer? = nil
-	var result = [Item]()
+	var result: [Item] = [Item]()
 	var catalog: Catalog? = nil
 	var observer: Observer?
 	var prevSearch = ""
 	var sqliteDBFileName: String = ""
 	var dispatchQueue: SynchronousDispatchQueue = DispatchQueue.global(qos: .background)
 	var isSearchFieldHidden = false
+	var isSearching = false
 	private var _state: CatalogState = .empty
 	private var _progress: Float = 0.0
 	private let mutex = NSLock()
@@ -73,10 +74,6 @@ class SearchViewModel: Model {
 		}
 	}
 	
-	var numberOfRows: Int {
-		return state == .searching ? 0 : result.count
-	}
-	
 	var state: CatalogState {
 		get {
 			guard let catalog = catalog else {
@@ -97,6 +94,7 @@ class SearchViewModel: Model {
 		catalog.observer = observer
 		if self.db != nil {
 			sqliteDBFileName = "import.sqlite"
+			catalog.loadingInBackground = true
 		}
 		catalog.load(into: sqliteDBFileName)
 	}
@@ -175,7 +173,7 @@ class SearchViewModel: Model {
 			if self.mutex.try() == false {
 				return
 			}
-			self.state = .searching
+			self.isSearching = true
 			self.result = []
 			self.observer?.modelDidUpdate()
 			self.prevSearch = input
@@ -192,7 +190,7 @@ class SearchViewModel: Model {
 //			if stripped == "" { // comment out to allow empty search
 //				self.result = []
 //				self.observer?.modelDidUpdate()
-//				self.state = .ready
+//				self.searching = false
 //				return
 //			}
 			var strings = [String]()
@@ -336,7 +334,7 @@ class SearchViewModel: Model {
 					let item = Item(serial: "", brand: brand, title: "", price: "")
 					self.result.append(item)
 				}
-				self.state = .ready
+				self.isSearching = false
 				self.observer?.modelDidUpdate()
 				print("\(currentTimeMillis() - start) ms (\(self.result.count) records)")
 				self.mutex.unlock()
@@ -400,7 +398,7 @@ class SearchViewModel: Model {
 				prevItem = item
 				self.result.append(item)
 			}
-			self.state = .ready
+			self.isSearching = false
 			self.observer?.modelDidUpdate()
 			self.latency = currentTimeMillis() - start;
 			print("\(self.latency) ms (\(self.resultRows) records)")
@@ -408,7 +406,11 @@ class SearchViewModel: Model {
 		}
 	}
 	
-	func getLoadingState() -> String {
+	var numberOfRows: Int {
+		return isSearching ? 0 : result.count
+	}
+	
+	var loadingState: String {
 		switch state {
 		case .fetching:
 			return "   Fetching..."
@@ -421,7 +423,7 @@ class SearchViewModel: Model {
 		}
 	}
 	
-	func getLoadingDetail() -> String {
+	var loadingDetail: String {
 		let percent = Int(100 * progress)
 		if state == .indexing {
 			return ""
@@ -493,14 +495,14 @@ class SearchViewModel: Model {
 	}
 	
 	var latencyText: String {
-		if self.state == .searching || latency == 0 {
+	 	if self.isSearching || latency == 0 {
 			return ""
 		}
 		return "\(latency) ms"
 	}
 	
 	var resultRowsText: String {
-		if self.state == .searching || resultRows == 0 {
+		if self.isSearching || resultRows == 0 {
 			return ""
 		}
 		return "\(resultRows) rows"

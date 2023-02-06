@@ -8,7 +8,7 @@ import XCTest
 @testable import SportSearch
 import SnapshotTesting
 
-private final class MockDispatchQueue: SynchronousDispatchQueue {
+private final class TestDispatchQueue: SynchronousDispatchQueue {
 	func execute(execute work: @escaping @convention(block) () -> Void) {
 		work()
 	}
@@ -70,13 +70,13 @@ class SearchViewModelTests: XCTestCase, Observer {
 		try super.setUpWithError()
 		copyBundleFileToDocs("TestCatalog.sqlite")
 		vm = SearchViewModel(sqliteDBFileName: "TestCatalog.sqlite")
-		vm.dispatchQueue = MockDispatchQueue.self()
+		vm.dispatchQueue = TestDispatchQueue.self()
 		vm.state = .ready
 		vm.observer = self
     }
 
 	func modelDidUpdate() {
-		if vm.prevSearch == "" || vm.state == .searching {
+		if vm.prevSearch == "" || vm.isSearching {
 			return
 		}
 		var item: Item
