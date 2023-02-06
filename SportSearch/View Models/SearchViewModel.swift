@@ -87,6 +87,48 @@ class SearchViewModel: Model {
 		}
 	}
 	
+	var numberOfRows: Int {
+		return isSearching ? 0 : result.count
+	}
+	
+	var loadingState: String {
+		switch state {
+		case .fetching:
+			return "   Fetching..."
+		case .loading:
+			return "   Loading..."
+		case .indexing:
+			return "   Indexing..."
+		default:
+			return ""
+		}
+	}
+	
+	var loadingDetail: String {
+		let percent = Int(100 * progress)
+		if state == .indexing {
+			return ""
+		}
+		if state == .loading, let catalog = catalog {
+			return "\(catalog.loopIndex) / \(catalog.loopCount) records (\(percent)%)"
+		}
+		return "\(percent)%"
+	}
+	
+	var latencyText: String {
+		if self.isSearching || latency == 0 {
+			return ""
+		}
+		return "\(latency) ms"
+	}
+	
+	var resultRowsText: String {
+		if self.isSearching || resultRows == 0 {
+			return ""
+		}
+		return "\(resultRows) rows"
+	}
+
 	func loadCatalog() {
 		guard let catalog = catalog else {
 			fatalError("\(name(self)).updateCatalog: failed to unwrap catalog")
@@ -94,7 +136,6 @@ class SearchViewModel: Model {
 		catalog.observer = observer
 		if self.db != nil {
 			sqliteDBFileName = "import.sqlite"
-			catalog.loadingInBackground = true
 		}
 		catalog.load(into: sqliteDBFileName)
 	}
@@ -187,12 +228,6 @@ class SearchViewModel: Model {
 			if stripped == "*" {
 				stripped = ""
 			}
-//			if stripped == "" { // comment out to allow empty search
-//				self.result = []
-//				self.observer?.modelDidUpdate()
-//				self.searching = false
-//				return
-//			}
 			var strings = [String]()
 			var brand = ""
 			var serial = ""
@@ -406,34 +441,6 @@ class SearchViewModel: Model {
 		}
 	}
 	
-	var numberOfRows: Int {
-		return isSearching ? 0 : result.count
-	}
-	
-	var loadingState: String {
-		switch state {
-		case .fetching:
-			return "   Fetching..."
-		case .loading:
-			return "   Loading..."
-		case .indexing:
-			return "   Indexing..."
-		default:
-			return ""
-		}
-	}
-	
-	var loadingDetail: String {
-		let percent = Int(100 * progress)
-		if state == .indexing {
-			return ""
-		}
-		if state == .loading, let catalog = catalog {
-			return "\(catalog.loopIndex) / \(catalog.loopCount) records (\(percent)%)"
-		}
-		return "\(percent)%"
-	}
-	
 	func leftText(forRowAt indexPath: IndexPath) -> String {
 		if indexPath.row > result.count - 1 {
 			return ""
@@ -493,18 +500,5 @@ class SearchViewModel: Model {
 		}
 		return result[indexPath.row]
 	}
-	
-	var latencyText: String {
-	 	if self.isSearching || latency == 0 {
-			return ""
-		}
-		return "\(latency) ms"
-	}
-	
-	var resultRowsText: String {
-		if self.isSearching || resultRows == 0 {
-			return ""
-		}
-		return "\(resultRows) rows"
-	}
+
 }

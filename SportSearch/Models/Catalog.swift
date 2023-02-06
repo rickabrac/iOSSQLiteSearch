@@ -29,7 +29,6 @@ class Catalog: Model {
 	var bytesScanned: UInt = 0
 	var loopIndex = 0
 	var loopCount: Int = 0
-	var loadingInBackground = false
 	private var dbPath: String = ""
 	private let catalogURI: String
 	private let catalogFileName: String
@@ -579,7 +578,7 @@ class Catalog: Model {
 		Title(db).createSQLiteIndexes()
 		Color(db).createSQLiteIndexes()
 		Size(db).createSQLiteIndexes()
-
+		
 		state = .ready
 	}
 	

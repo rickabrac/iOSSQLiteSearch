@@ -462,7 +462,7 @@ extension SearchView: Observer {
 
 extension SearchView: UITextFieldDelegate {
 	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-		guard let viewModel = viewModel, let text = textField.text else { return false }
+		guard let viewModel = viewModel, let text = textField.text, text.count > 0 else { return false }
 		spinner.isHidden = false
 		noResults.isHidden = true
 		tableView.reloadData()
@@ -544,7 +544,6 @@ extension SearchView: UITableViewDelegate {
 				vc.viewModel = vm
 				vm.isSearchFieldHidden = true
 				vc.presentCatalogUpdatingAlert = false
-				vm.state = .ready
 				let brandSearch = "/\(item.brand.replacingOccurrences(of: " ", with: "\\").lowercased()) "
 				vm.search(brandSearch)
 				usleep(250000)
