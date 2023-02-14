@@ -8,6 +8,7 @@ import Foundation
 import SQLite3
 
 class DetailViewModel: Model {
+	typealias ItemAttributes = Item
 	var db: OpaquePointer
 	var observer: Observer?
 	private var serial = ""
@@ -30,7 +31,7 @@ class DetailViewModel: Model {
 		return searching
 	}
 	
-	func loadDetails(_ search: Item) {
+	func loadDetails(_ search: ItemAttributes ) {
 		self.searching = true
 		self.search = search
 		self.serial = search.serial

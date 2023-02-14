@@ -5,7 +5,7 @@ use of SQLite to load and search a large sporting goods product catalog.
 
 ## Requirements
 
-• Supports iPhone and iPad
+• Support iPhone and iPad
 
 • Import a large .csv describing a catalog of sporting goods
 
@@ -13,11 +13,9 @@ use of SQLite to load and search a large sporting goods product catalog.
 
 • Optimize for memory consumption and performance.
 
-• Provide stats on while the file is being processed.
+• Provide stats while the file is being processed.
 
-• Provide a search screen that allows the user to search the database.
-
-• Include tests.
+• Provide an interface that allows the user to search the database.
 
 ## CSV Record format
 
