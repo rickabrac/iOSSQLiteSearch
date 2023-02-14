@@ -1,21 +1,17 @@
 ## Description
 
-iOSSportSearch is an MVVM reference app I wrote in Swift that demonstrates performant 
-use of SQLite to load and search a large sporting goods product catalog.
+iOSSportSearch is an MVVM app I wrote in Swift that demonstrates
+use of SQLite to load and search a large sporting goods catalog.
 
-## Requirements
+• Supports iPhone/iPad
 
-• Support iPhone and iPad
+• Downloads/ingests a 1M line .CSV describing catalog
 
-• Import a large .csv describing a catalog of sporting goods
+• Stores catalog in an SQLite database
 
-• Store the catalog in an SQLite database.
+• Provides stats while catalog is loading
 
-• Optimize for memory consumption and performance.
-
-• Provide stats while the file is being processed.
-
-• Provide an interface that allows the user to search the database.
+• Provides efficient search interface
 
 ## CSV Record format
 
@@ -24,32 +20,34 @@ Typical entries might look like this:
 99000025001001,Underarmour NK Golf Shirt,14.97,14.97,Black,SM
 99000025001002,Nike Golf Shirt UND,14.97,14.97,050,MD
 
-## Assumptions
+## Notes
 
 • The title field may indicate multiple brand names, sometimes expressed with shorthands,
   such as "Armour Fleece", which correlates to the Under Armour brand. 
   
-• The app should instantiate multiple individual products for a single input
-  line if multiple brands names appear in the title field.
+• The app can instantiate multiple individual products for a single input
+  line when multiple brands names are referenced in the title field.
 
-• A color is defined by both its name (e.g. "BLUE") and numeric shade value, when specified,
-  so BLUE.400, BLUE.401 and BLUE.402 are considered different colors.
+• A color is defined by both its name (e.g. "BLUE") and numeric shade value, if specified,
+  so BLUE.400, BLUE.401 and BLUE.402 are identified separately.
 
 ## Brand identification and product title cleanup
 
 The data contained in the second title field is "dirty" in the sense that it often contains
 brand abbreviations and misspellings, as well as potentially multiple brands within the same
-title field. To handle this, I introduced three additional meta data files that are used to
-identify brand names and cleaning up mispellings, etc. All input files for this project are
+title field. To handle this, I introduced four additional meta data files that are used to
+identify brand names and clean up mispellings, etc. All input files for this project are
 hosted on tyler.org:
 
 • http://tyler.org/iOSSportSearch/catalog.csv       // sporting goods catalog
 
-• http://tyler.org/iOSSportSearch/aliases.csv       // word/phrase aliases (first pass)
+• http://tyler.org/iOSSportSearch/aliases.csv       // word and phrase aliases (first pass)
 
-• http://tyler.org/iOSSportSearch/brandhints.csv    // brand names, aliases and or phrases to exclude from brand name names
+• http://tyler.org/iOSSportSearch/brandhints.csv    // brand names, aliases and/or excluded brand phrases
 
-• http://tyler.org/iOSSportSearch/brandmarks.csv    // brand-specific trademarks (e.g. "UNDER ARMOUR ARMOURFLEECE, CLUTCHFIT, etc.")
+• http://tyler.org/iOSSportSearch/brandmarks.csv    // brand-specific trademarks
+
+• http://tyler.org/iOSSportSearch/titlehints.csv    // hints used to ignore trailing noise in title
 
 ## Algorithm
 

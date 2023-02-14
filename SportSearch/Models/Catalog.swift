@@ -3,8 +3,7 @@
 //  SportSearch
 //  Created by Rick Tyler
 //
-//  Fetches the sporting goods catalog input file and associated metadata from the cloud
-//  and inserts the resulting product catalog into an optimized SQLite database.
+//  Fetch catalog from cloud, insert into SQLite
 //
 
 import Foundation
@@ -13,12 +12,12 @@ import Combine
 import UIKit
 
 enum CatalogState {
-	case empty        // initialized
-	case failed       // download failed w/out cached db
-	case fetching     // fetching catalog and metadata
-	case loading      // loading into SQLite db
-	case indexing     // indexing database
-	case ready        // ready to search
+	case empty        // init state
+	case failed       // failed download
+	case fetching     // fetching data
+	case loading      // sqlite loading
+	case indexing     // sqlite indexing
+	case ready        // ready
 }
 
 class Catalog: Model {
