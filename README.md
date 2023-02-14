@@ -1,6 +1,6 @@
 ## Description
 
-iOSSportSearch is an MVVM reference app I wrote in Swift that demonstrates the
+iOSSportSearch is an MVVM reference app I wrote in Swift that demonstrates performant 
 use of SQLite to load and search a large sporting goods product catalog.
 
 ## Requirements
@@ -26,8 +26,8 @@ Typical entries might look like this:
 
 ## Assumptions
 
-• The title field may contain multiple brand names, sometimes expressed with shorthands
-  (aliases), in addition to a product title.
+• The title field may indicate multiple brand names, sometimes expressed with shorthands,
+  such as "Armour Fleece", which correlates to the Under Armour brand. 
   
 • The app should instantiate multiple individual products for a single input
   line if multiple brands names appear in the title field.
