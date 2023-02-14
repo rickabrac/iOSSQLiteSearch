@@ -1,6 +1,6 @@
 //
 //  DetailViewModel.swift
-//	SportSearch
+//  SportSearch
 //  Created by Rick Tyler
 //
 
