@@ -8,7 +8,6 @@
 
 import Foundation
 import SQLite3
-import Combine
 import UIKit
 
 enum CatalogState {
