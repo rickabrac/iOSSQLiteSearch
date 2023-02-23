@@ -313,7 +313,7 @@ class Catalog: Model {
 	}
 	
 	private func importSource() {
-		if sqliteDBFileName == ":memory:"{
+		if sqliteDBFileName == ":memory:" {
 			db = SQLiteQuery.dbOpen(path: sqliteDBFileName, flags: SQLITE_OPEN_READWRITE | SQLITE_OPEN_NOMUTEX | SQLITE_OPEN_MEMORY | SQLITE_OPEN_URI )!
 		} else {
 			self.dbPath = FileManager.default
