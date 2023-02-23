@@ -3,7 +3,7 @@
 //  SportSearch
 //  Created by Rick Tyler
 //
-//  Fetch catalog from cloud, insert into SQLite
+//  Fetch catalog from cloud, insert into SQLite.
 //
 
 import Foundation
@@ -339,8 +339,6 @@ class Catalog: Model {
 		let insertSize = SQLiteQuery(db, "insert into size ( size ) values ( ? )")
 		
 		catalogCSV = TextFile(catalogFileName)
-		
-		// analysis first pass: identify brands
 		
 		var itemId: Int64 = 0
 		var lines = [String]()

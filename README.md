@@ -61,17 +61,16 @@ hosted on tyler.org:
 
   even if the brand is is missing from title field (e.g. "SKAGGERFLEECE", "ARMOURVENT")
 
-## Extra credit
+## Search features
 
-• Brand filtering "/nike"
+• Brand filtering (e.g. "/nike")
 
-• List all brands "/"
+• List all brands ("/")
 
-• Serial number fragment search (e.g. "#99000026001001", "#261000")
+• Search by serial number fragment (e.g. "#99000026001001", "#261000")
 
-• Once loaded successfully, the app immediataely allows the user to search the catalog
-
-  when the app restarts while updating the existing catalog in the background.
+• Once loaded successfully and restarted, the app immediately allows the user to search
+  the existing catalog while updating it in the background.
   
 • Handle brand trademarks (see above)
 
