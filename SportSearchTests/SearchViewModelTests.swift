@@ -8,13 +8,8 @@ import XCTest
 @testable import SportSearch
 import SnapshotTesting
 
-private final class TestDispatchQueue: SynchronousDispatchQueue {
-	func execute(execute work: @escaping @convention(block) () -> Void) {
-		work()
-	}
-}
-
 class SearchViewModelTests: XCTestCase, Observer {
+	
 	var vm: SearchViewModel!
 	let inputs = [
 		"hockey pant",
@@ -290,4 +285,10 @@ print("BRAND\(i) [\(item.brand)] [\(vneckResult[i].brand)]")
 			vm.search(input)
 		}
     }
+}
+
+private final class TestDispatchQueue: _DispatchQueue {
+	func execute(execute work: @escaping @convention(block) () -> Void) {
+		work()
+	}
 }

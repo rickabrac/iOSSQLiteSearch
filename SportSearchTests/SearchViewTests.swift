@@ -8,13 +8,8 @@ import XCTest
 import SnapshotTesting
 @testable import SportSearch
 
-private final class TestDispatchQueue: SynchronousDispatchQueue {
-	func execute(execute work: @escaping @convention(block) () -> Void) {
-		work()
-	}
-}
-
 class SearchViewTests: XCTestCase {
+	
 	let vc = SearchView(dispatchQueue: TestDispatchQueue.self())
 	var vm: SearchViewModel!
 	let light = UITraitCollection(userInterfaceStyle: UIUserInterfaceStyle.light)
@@ -110,5 +105,11 @@ class SearchViewTests: XCTestCase {
 		vm.isSearchFieldHidden = true
 		vm.search("/under")
 		assertSnapshot(matching: vc, as: .image(on: .iPhone13, traits: dark))
+	}
+}
+
+private final class TestDispatchQueue: _DispatchQueue {
+	func execute(execute work: @escaping @convention(block) () -> Void) {
+		work()
 	}
 }

@@ -6,11 +6,11 @@
 
 import Foundation
 
-protocol SynchronousDispatchQueue {
+protocol _DispatchQueue {
 	func execute(execute work: @escaping @convention(block) () -> Void)
 }
 
-extension DispatchQueue: SynchronousDispatchQueue {
+extension DispatchQueue: _DispatchQueue {
 	func execute(execute work: @escaping @convention(block) () -> Void) {
 		async(group: nil, qos: .unspecified, flags: [], execute: work)
 	}

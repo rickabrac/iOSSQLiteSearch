@@ -7,6 +7,7 @@
 import UIKit
 
 class SearchRow: UITableViewCell {
+	
 	let titleLabel = UILabel()
 	let priceLabel = UILabel()
 	let brandLabel = UILabel()

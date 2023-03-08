@@ -8,6 +8,7 @@ import XCTest
 @testable import SportSearch
 
 class TextFileTests: XCTestCase {
+	
 	let input = "TestTextFile.txt"
 	
 	override func tearDownWithError() throws {

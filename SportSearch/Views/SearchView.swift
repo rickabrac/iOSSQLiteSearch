@@ -13,6 +13,7 @@
 import UIKit
 
 class SearchView: UIViewController {
+	
 	var viewModel: SearchViewModel?
 	private var search = UITextField()
 	private let tableView = UITableView()
@@ -25,7 +26,7 @@ class SearchView: UIViewController {
 	private let resultRowsLabel = UILabel()
 	private var progressView = UIProgressView(progressViewStyle: .bar)
 	private var progressSpinner = UIActivityIndicatorView(style: .medium)
-	private var dispatchQueue: SynchronousDispatchQueue = DispatchQueue.main
+	private var dispatchQueue: _DispatchQueue = DispatchQueue.main
 	private var presentCatalogUpdatingAlert = false
 	private var loadingViewConstraints = [NSLayoutConstraint]()
 	private var tableViewConstraints = [NSLayoutConstraint]()
@@ -34,7 +35,7 @@ class SearchView: UIViewController {
 	private var backgroundLoadingAlert: UIAlertController? = nil
 	private var helpAlert: UIAlertController? = nil
 	
-	init(dispatchQueue: SynchronousDispatchQueue) {
+	init(dispatchQueue: _DispatchQueue) {
 		self.dispatchQueue = dispatchQueue
 		super.init(nibName: nil, bundle: nil)
 		loadViewIfNeeded()

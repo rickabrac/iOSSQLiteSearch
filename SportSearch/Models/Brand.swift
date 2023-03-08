@@ -5,6 +5,7 @@
 //
 
 class Brand: SQLiteTable {
+	
 	override init( _ db: OpaquePointer?){
 		super.init(db)
 		self.db = db

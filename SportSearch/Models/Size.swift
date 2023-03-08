@@ -5,7 +5,8 @@
 //
 
 class Size: SQLiteTable {
-	override init( _ db: OpaquePointer?){
+	
+	override init( _ db: OpaquePointer?) {
 		super.init(db)
 		self.db = db
 	}

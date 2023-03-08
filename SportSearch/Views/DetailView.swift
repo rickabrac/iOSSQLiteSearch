@@ -10,9 +10,10 @@
 import UIKit
 
 class DetailView: UIViewController {
+	
 	var viewModel: DetailViewModel?
 	var spinner: UIActivityIndicatorView = UIActivityIndicatorView()
-	var dispatchQueue: SynchronousDispatchQueue = DispatchQueue.main
+	var dispatchQueue: _DispatchQueue = DispatchQueue.main
 	@IBOutlet weak var tableView: UITableView!
 	
 	required init?(coder: NSCoder) {

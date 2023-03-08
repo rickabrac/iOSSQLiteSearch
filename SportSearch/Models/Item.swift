@@ -7,6 +7,7 @@
 import Foundation
 
 class Item: SQLiteTable, Equatable {
+	
 	var serial: String = ""
 	var price: String = ""
 	var brand: String = ""

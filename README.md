@@ -3,85 +3,83 @@
 iOSSportSearch is an MVVM app I wrote in Swift that demonstrates
 use of SQLite to load and search a large sporting goods catalog.
 
-• Supports iPhone/iPad
+• Downloads/ingests 1M line .CSV representing a sporting goods catalog
 
-• Downloads/ingests a 1M line .CSV describing catalog
+• Stores data in high-performance SQLite database
 
-• Stores catalog in an SQLite database
-
-• Provides stats while catalog is loading
+• Provides stats while loading catalog
 
 • Provides efficient search interface
 
+• Supports both iPhone and iPad
+
 ## CSV Record format
 
-Typical entries might look like this:
+Typical entries:
 
 99000025001001,Underarmour NK Golf Shirt,14.97,14.97,Black,SM
 99000025001002,Nike Golf Shirt UND,14.97,14.97,050,MD
 
 ## Notes
 
-• The title field may indicate multiple brand names, sometimes expressed with shorthands,
-  such as "Armour Fleece", which correlates to the Under Armour brand. 
+• Title field may indicate multiple brands, sometimes expressed using shorthands.
+  "Armour Fleece" is an example that correlates to a specific Under Armour product
+  line. 
   
-• The app can instantiate multiple individual products for a single input
-  line when multiple brands names are referenced in the title field.
+• Multiple items can be instantiated for single input lines when multiple brands names
+  are present.
 
-• A color is defined by both its name (e.g. "BLUE") and numeric shade value, if specified,
-  so BLUE.400, BLUE.401 and BLUE.402 are identified separately.
+• Color is defined by both name (e.g. "BLUE") and numeric shade value, when specified.
 
 ## Brand identification and product title cleanup
 
-The data contained in the second title field is "dirty" in the sense that it often contains
-brand abbreviations and misspellings, as well as potentially multiple brands within the same
-title field. To handle this, I introduced four additional meta data files that are used to
-identify brand names and clean up mispellings, etc. All input files for this project are
-hosted on tyler.org:
+Data contained in title field is "dirty" in the sense that it often contains brand
+abbreviations and/or misspellings, as well as potentially multiple brand name references
+which should result in multiple catalog items associated with different brands but
+sharing a description. To handle this, I introduced four additional metadata files used
+to identify brand names, identify aliases, clean up mispellings, etc.
 
-• http://tyler.org/iOSSportSearch/catalog.csv       // sporting goods catalog
+Metadata files:
 
-• http://tyler.org/iOSSportSearch/aliases.csv       // word and phrase aliases (first pass)
+• http://tyler.org/iOSSportSearch/catalog.csv       // the sporting goods catalog
 
-• http://tyler.org/iOSSportSearch/brandhints.csv    // brand names, aliases and/or excluded brand phrases
+• http://tyler.org/iOSSportSearch/aliases.csv       // word/phrase aliases
+
+• http://tyler.org/iOSSportSearch/brandhints.csv    // brand names, aliases and/or excluded phrases
 
 • http://tyler.org/iOSSportSearch/brandmarks.csv    // brand-specific trademarks
 
-• http://tyler.org/iOSSportSearch/titlehints.csv    // hints used to ignore trailing noise in title
+• http://tyler.org/iOSSportSearch/titlehints.csv    // hints used to ignore trailing noise in title field
 
 ## Algorithm
 
-• Strip extraneous size and color information from the end of the title field.
+• Strip extraneous size and color information from the end of title field
 
-• Apply word/phrase aliases to title field
+• Apply word/phrase aliases to title
 
-• Identify brands using metadata in brandhints.csv
+• Identify brands using brandhints
 
-• Use brandmarks.csv to handle product name trademarks that imply a certain brand,
+• Use brandmarks to handle product name trademarks belonging to particular brand
 
-  even if the brand is is missing from title field (e.g. "SKAGGERFLEECE", "ARMOURVENT")
-
-## Search features
+## Features
 
 • Brand filtering (e.g. "/nike")
 
-• List all brands ("/")
+• Listing of all brands ("/")
 
-• Search by serial number fragment (e.g. "#99000026001001", "#261000")
+• Searching by serial number fragment (e.g. "#99000026001001", "#261000")
 
-• Once loaded successfully and restarted, the app immediately allows the user to search
-  the existing catalog while updating it in the background.
+• Once loaded successfully and restarted, app will immediately allow user to search
+  catalog while updating catalog in the background.
   
-• Handle brand trademarks (see above)
-
 ## Testing
-
-• This app uses the snapshot-testing package for view controller tests instead of a traditional XCode UI test.
-  
-• Snapshot tests require the iPhone 13 simulator in portrait mode.
-
-• There are snapshot tests for light and dark modes.
 
 • To run all tests, type ⌘-u.
 
-• TestCatalog.csv is a subset of the master input file used for tests.
+• Requires snapshot-testing Swift package for all view controller tests.
+  
+• Snapshot tests require the Phone 13 simulator in portrait mode.
+
+• Tests support light and dark modes.
+
+• TestCatalog.csv is a subset of the live source.

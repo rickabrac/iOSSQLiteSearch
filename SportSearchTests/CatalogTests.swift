@@ -8,6 +8,7 @@ import XCTest
 @testable import SportSearch
 
 class CatalogTests: XCTestCase {
+	
 	var catalog: Catalog? = nil
 
     override func setUpWithError() throws {

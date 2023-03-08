@@ -7,6 +7,7 @@
 import Foundation
 
 class Color: SQLiteTable {
+	
 	override init( _ db: OpaquePointer?){
 		super.init(db)
 		self.db = db

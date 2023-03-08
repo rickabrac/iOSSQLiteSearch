@@ -9,6 +9,7 @@ import XCTest
 import SnapshotTesting
 
 class DetailViewModelTests: XCTestCase, Observer {
+	
 	var vm: DetailViewModel!
 	let inputs: [Item] = [
 		Item(serial: "", brand: "", title: "TRANSIT WOVEN PANTS", price: "", color: ""),                        // brand selection

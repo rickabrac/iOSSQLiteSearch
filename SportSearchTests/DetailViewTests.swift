@@ -9,6 +9,7 @@ import SnapshotTesting
 @testable import SportSearch
 
 class DetailViewTests: XCTestCase {
+	
 	let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailView") as! DetailView
 	var vm: DetailViewModel!
 	let light = UITraitCollection(userInterfaceStyle: UIUserInterfaceStyle.light)

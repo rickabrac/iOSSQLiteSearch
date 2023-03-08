@@ -7,6 +7,7 @@
 import Foundation
 
 class SQLiteTable {
+	
 	var db: OpaquePointer?
 	
 	init(_ db: OpaquePointer? = nil) {

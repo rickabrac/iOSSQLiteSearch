@@ -8,6 +8,7 @@ import Foundation
 import SQLite3
 
 class DetailViewModel: Model {
+	
 	typealias ItemAttributes = Item
 	var db: OpaquePointer
 	var observer: Observer?

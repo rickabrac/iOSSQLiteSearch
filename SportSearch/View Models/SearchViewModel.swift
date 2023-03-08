@@ -8,13 +8,14 @@ import Foundation
 import SQLite3
 
 class SearchViewModel: Model {
+	
 	var db: OpaquePointer? = nil
 	var result: [Item] = [Item]()
 	var catalog: Catalog? = nil
 	var observer: Observer?
 	var prevSearch = ""
 	var sqliteDBFileName: String = ""
-	var dispatchQueue: SynchronousDispatchQueue = DispatchQueue.global(qos: .background)
+	var dispatchQueue: _DispatchQueue = DispatchQueue.global(qos: .background)
 	var isSearchFieldHidden = false
 	var isSearching = false
 	private var _state: CatalogState = .empty

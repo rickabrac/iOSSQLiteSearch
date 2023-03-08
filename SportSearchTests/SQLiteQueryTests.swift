@@ -9,6 +9,7 @@ import XCTest
 import SQLite3
 
 class SQLiteQueryTests: XCTestCase {
+	
 	var db: OpaquePointer? = nil
 	
     override func setUpWithError() throws {

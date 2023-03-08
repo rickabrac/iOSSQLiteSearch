@@ -3,7 +3,7 @@
 //  SportSearch
 //  Created by Rick Tyler
 //
-//  Fetch catalog from cloud, insert into SQLite.
+//  Fetches sporting goods catalog from cloud and inserts into SQLite.
 //
 
 import Foundation
@@ -20,6 +20,7 @@ enum CatalogState {
 }
 
 class Catalog: Model {
+	
 	internal var observer: Observer?
 	var sqliteDBFileName: String = ""
 	var db: OpaquePointer? = nil

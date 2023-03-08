@@ -10,6 +10,7 @@ import SQLite3
 var sqliteQueries = Set<String>()
 
 class SQLiteQuery {
+	
 	let db: OpaquePointer
 	var sql: String
 	var bound = false
@@ -32,9 +33,9 @@ class SQLiteQuery {
 		return String(cString: sqlite3_errmsg(query))
 	}
 	
-	// Executes the SQL statement. For select, caller must step throught results by calling repeatedly
-	// until return value is false. After any successful call, use get...() methods to retrieve values
-	// by column index.
+	// Executes an SQL statement. For select statements, caller must step through results by calling
+	// repeatedly until return value is false. After a successful call, use get...() methods to retrieve
+	// values by column index, as per the native API.
 	
 	func execute() -> Bool {
 		let sql = self.sql.lowercased()
@@ -51,7 +52,8 @@ class SQLiteQuery {
 			}
 			return error == SQLITE_DONE
 		}
-		if sql.starts(with: "s") { // select
+		if sql.starts(with: "s") {
+			// select
 			error = sqlite3_step(query)
 			if error == SQLITE_DONE {
 				if bound == false && sqlite3_finalize(query) != SQLITE_OK {
@@ -75,7 +77,7 @@ class SQLiteQuery {
 			}
 			return error == SQLITE_DONE
 		}
-		if sql.starts(with: "cr") {
+		if sql.starts(with: "c") {
 			// create
 			error = sqlite3_step(query)
 			if bound == false && error != SQLITE_CONSTRAINT && sqlite3_finalize(query) != SQLITE_OK {
@@ -86,7 +88,8 @@ class SQLiteQuery {
 			}
 			return error == SQLITE_DONE || error == SQLITE_CONSTRAINT
 		}
-		if sql.starts(with: "u") { // update
+		if sql.starts(with: "u") {
+			// update
 			error = sqlite3_step(query)
 			if bound == false && sqlite3_finalize(query) != SQLITE_OK {
 				fatalError("\(name(self)).execute: sqlite3_finalized() failed on update (\(errorMessage))")
@@ -96,7 +99,8 @@ class SQLiteQuery {
 			}
 			return error == SQLITE_DONE && sqlite3_changes(db) > 0
 		}
-		if sql.starts(with: "d") { // delete
+		if sql.starts(with: "d") {
+			// delete
 			error = sqlite3_step(query)
 			if bound == false && sqlite3_finalize(query) != SQLITE_OK {
 				fatalError("\(name(self)).execute: sqlite3_finalized() failed on delete (\(errorMessage))")

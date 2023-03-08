@@ -3,9 +3,9 @@
 //  SportSearch
 //  Created by Rick Tyler
 //
-//  Open and/or load a text file in documents directory. Allows line-by-line processing via
-//  Sequence protocol. Calling fetch() loads/overwrites local file either from a remote
-//  URL a URL or a file located in the root directory of the app bundle root.
+//  Opens and/or loads/overwrites a text file in Documents directory given remote or local URL.
+//  Allows line-by-line processing via Sequence protocol. Local paths assumed relative to app bundle
+//  root.
 //
 
 import Foundation
@@ -105,6 +105,7 @@ extension TextFile {
 // MARK: URL extension returns file size
 
 private extension URL {
+	
 	var attributes: [FileAttributeKey : Any]? {
 		do {
 			return try FileManager.default.attributesOfItem(atPath: path)
