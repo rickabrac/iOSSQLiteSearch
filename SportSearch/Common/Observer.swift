@@ -7,4 +7,3 @@
 protocol Observer {
 	func modelDidUpdate()
 }
-
